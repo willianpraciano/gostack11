@@ -1,7 +1,9 @@
 const express = require('express');
+const cors = require('cors');
 const { uuid, isUuid } = require('uuidv4');
 
 const app = express();
+app.use(cors()); //perimite que qualquer frontend vindo de qualquer url tenha acesso ao BD
 
 app.use(express.json()); // faz o express ler arquivos JSON
 
