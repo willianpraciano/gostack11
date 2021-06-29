@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
-const { uuid, isUuid } = require('uuidv4');
+// const { uuid, validate, isUuid } = require('uuidv4');
+const { v4: uuid_v4, validate } = require('uuid');
 
 const app = express();
 app.use(cors()); //perimite que qualquer frontend vindo de qualquer url tenha acesso ao BD
@@ -25,7 +26,7 @@ function logRequest(request, response, next) {
 function validadeProjectId(request, response, next) {
   const { id } = request.params;
 
-  if(!isUuid(id)) {
+  if(!validate(id)) {
     return response.status(400).json({ error: 'Invalid project ID.' })
   }
 
