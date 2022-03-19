@@ -27,13 +27,10 @@ class CreateAppointmentService {
     }
 
     //Cria a instância do Appointment mas não salva no banco de dados
-    const appointment = appointmentsRepository.create({
+    const appointment = await appointmentsRepository.create({
       provider_id,
       date: appointmentDate,
     });
-
-    //Salva o Appointiment inicializado no Banco de Dados
-    await appointmentsRepository.save(appointment);
 
     return appointment;
   }
