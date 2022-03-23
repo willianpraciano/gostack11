@@ -7,12 +7,12 @@ import AppError from '@shared/errors/AppError';
 
 import User from '../infra/typeorm/entities/User';
 
-interface Request {
+interface IRequest {
   email: string;
   password: string;
 }
 
-interface Reponse {
+interface IReponse {
   user: User;
   token: string;
 }
