@@ -3,6 +3,7 @@ import path from 'path';
 import fs from 'fs';
 import uploadConfig from '@config/upload';
 
+import IUserRepository from '../repositories/IUsersRepository';
 import AppError from '@shared/errors/AppError';
 
 import User from '../infra/typeorm/entities/User';
@@ -13,10 +14,10 @@ interface IRequest {
 }
 
 class UpdateUserAvatarService {
-  public async execute({ user_id, avatarFilename }: Request): Promise<User> {
-    const userRepository = getRepository(User);
+  constructor(private usersRepository: IUserRepository) {}
 
-    const user = await userRepository.findOne(user_id);
+  public async execute({ user_id, avatarFilename }: IRequest): Promise<User> {
+    const user = await this.usersRepository.findById(user_id);
 
     if (!user) {
       //verifica se o usuário existe
@@ -36,7 +37,7 @@ class UpdateUserAvatarService {
 
     user.avatar = avatarFilename;
 
-    await userRepository.save(user);
+    await this.usersRepository.save(user);
 
     return user;
   }
