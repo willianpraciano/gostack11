@@ -44,8 +44,8 @@ export default class ListProviderMonthAvailabilityService {
     );
 
     const availability = eachDayArray.map(day => {
-      const appointmentsInDay = appointments.filter(appointments => {
-        return getDate(appointments.date) === day;
+      const appointmentsInDay = appointments.filter(appointment => {
+        return getDate(appointment.date) === day;
       });
 
       /**
