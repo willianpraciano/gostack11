@@ -8,6 +8,7 @@ import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
 
 interface IRequest {
   provider_id: string;
+  user_id: string;
   date: Date;
 }
 
@@ -19,7 +20,11 @@ class CreateAppointmentService {
   ) {}
 
   //retorno de funçao async é sempre uma Promise
-  public async execute({ date, provider_id }: IRequest): Promise<Appointment> {
+  public async execute({
+    date,
+    user_id,
+    provider_id,
+  }: IRequest): Promise<Appointment> {
     const appointmentDate = startOfHour(date);
 
     const findAppointmentInSameDate =
@@ -32,6 +37,7 @@ class CreateAppointmentService {
     //Cria a instância do Appointment mas não salva no banco de dados
     const appointment = await this.appointmentsRepository.create({
       provider_id,
+      user_id,
       date: appointmentDate,
     });
 
