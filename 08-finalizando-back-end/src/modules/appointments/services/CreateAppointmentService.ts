@@ -7,13 +7,11 @@ import Appointment from '../infra/typeorm/entities/Appointment';
 import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
 
 import INotificationsRepository from '@modules/notifications/repositories/INotificationsRepository';
-
 interface IRequest {
   provider_id: string;
   user_id: string;
   date: Date;
 }
-
 @injectable()
 class CreateAppointmentService {
   constructor(

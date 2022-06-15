@@ -1,4 +1,4 @@
-import { uuid } from 'uuidv4';
+import { v4 as uuid } from 'uuid';
 import { isEqual, getMonth, getYear, getDate } from 'date-fns';
 
 import IAppoitmentsRepository from '@modules/appointments/repositories/IAppointmentsRepository';

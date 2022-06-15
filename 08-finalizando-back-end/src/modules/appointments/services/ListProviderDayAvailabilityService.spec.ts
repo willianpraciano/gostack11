@@ -1,5 +1,3 @@
-import AppError from '@shared/errors/AppError';
-
 import FakeAppointmentsRepository from '../repositories/fakes/FakeAppointmentsRepository';
 import ListProviderDayAvailabilityService from './ListProviderDayAvailabilityService';
 
@@ -38,7 +36,6 @@ describe('ListProviderDayAvailability', () => {
       day: 20,
     });
 
-    console.log(availability);
     expect(availability).toEqual(
       expect.arrayContaining([
         { hour: 8, available: false },
