@@ -17,7 +17,7 @@ export default class ListProviderAppointmentsService {
     @inject('AppointmentsRepository')
     private appointmentsRepository: IAppointmentsRepository,
 
-    @inject('CacheProvier')
+    @inject('CacheProvider')
     private cacheProvider: ICacheProvider,
   ) {}
 
@@ -42,9 +42,10 @@ export default class ListProviderAppointmentsService {
           day,
         },
       );
-    }
 
-    await this.cacheProvider.save(cacheKey, appointments);
+      console.log('Buscou no banco');
+      await this.cacheProvider.save(cacheKey, appointments);
+    }
 
     return appointments;
   }
