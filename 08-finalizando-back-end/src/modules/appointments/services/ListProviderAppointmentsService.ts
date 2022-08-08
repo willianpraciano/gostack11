@@ -3,6 +3,7 @@ import { injectable, inject } from 'tsyringe';
 import Appointment from '../infra/typeorm/entities/Appointment';
 import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
 import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
+import { instanceToInstance } from 'class-transformer';
 
 interface IRequestDTO {
   provider_id: string;
@@ -44,7 +45,7 @@ export default class ListProviderAppointmentsService {
       );
 
       console.log('Buscou no banco');
-      await this.cacheProvider.save(cacheKey, appointments);
+      await this.cacheProvider.save(cacheKey, instanceToInstance(appointments));
     }
 
     return appointments;
