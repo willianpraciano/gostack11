@@ -8,7 +8,7 @@ export function Routes() {
   return (
     <Switch>
       <Route path="/" element={<Dashboard />} />
-      <Route path="/repository/:repository" element={<Repository />} />
+      <Route path="/repository/:repo" element={<Repository />} />
     </Switch>
   );
 }
