@@ -19,7 +19,7 @@ export const Content = styled.div`
   max-width: 700px;
 
   form {
-    margin: 80px 0;
+    margin: 20px 0;
     width: 340px;
     text-align: center;
 
