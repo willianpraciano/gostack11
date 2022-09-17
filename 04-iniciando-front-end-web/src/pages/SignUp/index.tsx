@@ -21,10 +21,14 @@ export function SignUp() {
         <img src={logoImg} alt="Logo goBarber" />
 
         <Form initialData={{ name: 'Willian' }} onSubmit={handleSubmit}>
+          {/**
+           * No Form o initialData define o valor inicial do input
+           * as chaves do objeto devem ser iguais ao name do input
+           */}
           <h1>Faça seu cadastro</h1>
 
           <Input name="name" icon={FiUser} placeholder="Nome" />
-          <Input name="email" icon={FiMail} placeholder="E-mail" />
+          <Input name="email" type="email" icon={FiMail} placeholder="E-mail" />
           <Input
             name="password"
             icon={FiLock}
