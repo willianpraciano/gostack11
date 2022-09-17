@@ -8,7 +8,7 @@ import { SignUp } from './pages/SignUp';
 function App() {
   return (
     <>
-      <SignIn />
+      <SignUp />
       <GobalStyle />
     </>
   );
