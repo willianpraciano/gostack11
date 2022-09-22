@@ -1,6 +1,7 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { FiArrowLeft, FiUser, FiMail, FiLock } from 'react-icons/fi';
 import { Form } from '@unform/web';
+import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
 
 import logoImg from '../../assets/logo.svg';
@@ -9,10 +10,17 @@ import { Input } from '../../components/Input';
 import { Button } from '../../components/Button';
 
 import { Container, Content, Background } from './styles';
+import { getValidationErrors } from '../../utils/getValidationErrors';
 
 export function SignUp() {
+  const formRef = useRef<FormHandles>(null);
+
+  console.log(formRef);
+
   const handleSubmit = useCallback(async (data: object) => {
     try {
+      formRef.current?.setErrors({});
+
       const schema = Yup.object().shape({
         name: Yup.string().required('Nome obrigatório.'),
         email: Yup.string()
@@ -25,7 +33,8 @@ export function SignUp() {
         abortEarly: false,
       });
     } catch (err: any) {
-      console.log(err?.errors);
+      const errors = getValidationErrors(err);
+      formRef.current?.setErrors(errors);
     }
   }, []);
 
@@ -35,7 +44,11 @@ export function SignUp() {
       <Content>
         <img src={logoImg} alt="Logo goBarber" />
 
-        <Form initialData={{ name: 'Willian' }} onSubmit={handleSubmit}>
+        <Form
+          ref={formRef}
+          initialData={{ name: 'Willian' }}
+          onSubmit={handleSubmit}
+        >
           {/**
            * No Form o initialData define o valor inicial do input
            * as chaves do objeto devem ser iguais ao name do input

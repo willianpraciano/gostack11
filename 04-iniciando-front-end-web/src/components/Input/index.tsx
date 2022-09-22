@@ -33,7 +33,7 @@ export function Input({ name, icon: Icon, ...rest }: InputProps) {
    * componente é renderizado/modificado em tela essa função é recriada
    * na memória.
    *
-   * Para evitar perdad no desempenho da aplicação, *SEMPRE* que você for criar
+   * Para evitar perdas no desempenho da aplicação, *SEMPRE* que você for criar
    * uma função dentro de um componente utilize useCallback
    */
   const handleInputBlur = useCallback(() => {
@@ -63,6 +63,7 @@ export function Input({ name, icon: Icon, ...rest }: InputProps) {
         ref={inputRef}
         {...rest}
       />
+      {error}
     </Container>
   );
 }
