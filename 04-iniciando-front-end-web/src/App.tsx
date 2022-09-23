@@ -5,7 +5,7 @@ import GobalStyle from './styles/global';
 import { SignIn } from './pages/SignIn';
 import { SignUp } from './pages/SignUp';
 
-import { AuthProvider } from './contexts/AuthContext';
+import { AuthProvider } from './hooks/AuthContext';
 
 function App() {
   return (
