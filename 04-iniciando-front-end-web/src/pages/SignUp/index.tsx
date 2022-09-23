@@ -15,8 +15,6 @@ import { getValidationErrors } from '../../utils/getValidationErrors';
 export function SignUp() {
   const formRef = useRef<FormHandles>(null);
 
-  console.log(formRef);
-
   const handleSubmit = useCallback(async (data: object) => {
     try {
       formRef.current?.setErrors({});
@@ -25,7 +23,7 @@ export function SignUp() {
         name: Yup.string().required('Nome obrigatório.'),
         email: Yup.string()
           .required('E-mail obrigatório.')
-          .email('Digite um e-mail válido'),
+          .email('Digite um e-mail válido.'),
         password: Yup.string().min(6, 'Senha deve conter no mínimo 6 digitos'),
       });
 

@@ -5,10 +5,14 @@ import GobalStyle from './styles/global';
 import { SignIn } from './pages/SignIn';
 import { SignUp } from './pages/SignUp';
 
+import AuthContext from './contexts/AuthContext';
+
 function App() {
   return (
     <>
-      <SignUp />
+      <AuthContext.Provider value={{ name: 'Diego' }}>
+        <SignIn />
+      </AuthContext.Provider>
       <GobalStyle />
     </>
   );
