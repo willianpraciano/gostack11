@@ -1,4 +1,10 @@
-import React, { createContext, ReactNode, useCallback, useState } from 'react';
+import React, {
+  createContext,
+  ReactNode,
+  useCallback,
+  useState,
+  useContext,
+} from 'react';
 import { api } from '../services/api';
 
 interface IAuthState {
@@ -15,12 +21,11 @@ interface IAuthContext {
   user: object;
   signIn(credentials: ISignInCredentials): Promise<void>;
 }
-
-export const AuthContext = createContext<IAuthContext>({} as IAuthContext);
-
 interface IAuthProviderProps {
   children: ReactNode;
 }
+
+const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 
 export function AuthProvider({ children }: IAuthProviderProps) {
   const [data, setData] = useState<IAuthState>(() => {
@@ -56,4 +61,14 @@ export function AuthProvider({ children }: IAuthProviderProps) {
       {children}
     </AuthContext.Provider>
   );
+}
+
+export function useAuth(): IAuthContext {
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+
+  return context;
 }
