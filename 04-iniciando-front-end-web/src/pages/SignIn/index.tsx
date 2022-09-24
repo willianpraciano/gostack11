@@ -43,10 +43,12 @@ export function SignIn() {
 
         signIn({ email: data.email, password: data.password });
       } catch (err: any) {
-        console.log('Err: ', err);
+        if (err instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(err);
+          formRef.current?.setErrors(errors);
+        }
 
-        const errors = getValidationErrors(err);
-        formRef.current?.setErrors(errors);
+        console.log('Erro:', err);
       }
     },
     [signIn], // toda variável externa usada dentro do useCallback precisa ser colocada nas dependências
