@@ -4,7 +4,8 @@ import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
 
-import { useAuth } from '../../hooks/AuthContext';
+import { useAuth } from '../../hooks/auth';
+import { useToast } from '../../hooks/toast';
 
 import { getValidationErrors } from '../../utils/getValidationErrors';
 
@@ -24,6 +25,7 @@ export function SignIn() {
   const formRef = useRef<FormHandles>(null);
 
   const { signIn } = useAuth();
+  const { addToast } = useToast();
 
   const handleSubmit = useCallback(
     async (data: ISignInFormData) => {
@@ -41,17 +43,17 @@ export function SignIn() {
           abortEarly: false,
         });
 
-        signIn({ email: data.email, password: data.password });
+        await signIn({ email: data.email, password: data.password });
       } catch (err: any) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
           formRef.current?.setErrors(errors);
         }
 
-        console.log('Erro:', err);
+        addToast();
       }
     },
-    [signIn], // toda variável externa usada dentro do useCallback precisa ser colocada nas dependências
+    [signIn, addToast], // toda variável externa usada dentro do useCallback precisa ser colocada nas dependências
   );
 
   return (
