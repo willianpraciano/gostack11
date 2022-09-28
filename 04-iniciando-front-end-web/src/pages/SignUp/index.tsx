@@ -2,6 +2,7 @@ import React, { useCallback, useRef } from 'react';
 import { FiArrowLeft, FiUser, FiMail, FiLock } from 'react-icons/fi';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
+import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
 
 import logoImg from '../../assets/logo.svg';
@@ -9,7 +10,7 @@ import logoImg from '../../assets/logo.svg';
 import { Input } from '../../components/Input';
 import { Button } from '../../components/Button';
 
-import { Container, Content, Background } from './styles';
+import { Container, Content, AnimationContainer, Background } from './styles';
 import { getValidationErrors } from '../../utils/getValidationErrors';
 
 export function SignUp() {
@@ -40,34 +41,36 @@ export function SignUp() {
     <Container>
       <Background />
       <Content>
-        <img src={logoImg} alt="Logo goBarber" />
+        <AnimationContainer>
+          <img src={logoImg} alt="Logo goBarber" />
 
-        <Form
-          ref={formRef}
-          initialData={{ name: 'Willian' }}
-          onSubmit={handleSubmit}
-        >
-          {/**
-           * No Form o initialData define o valor inicial do input
-           * as chaves do objeto devem ser iguais ao name do input
-           */}
-          <h1>Faça seu cadastro</h1>
+          <Form
+            ref={formRef}
+            initialData={{ name: 'Willian' }}
+            onSubmit={handleSubmit}
+          >
+            {/**
+             * No Form o initialData define o valor inicial do input
+             * as chaves do objeto devem ser iguais ao name do input
+             */}
+            <h1>Faça seu cadastro</h1>
 
-          <Input name="name" icon={FiUser} placeholder="Nome" />
-          <Input name="email" icon={FiMail} placeholder="E-mail" />
-          <Input
-            name="password"
-            icon={FiLock}
-            type="password"
-            placeholder="Senha"
-          />
+            <Input name="name" icon={FiUser} placeholder="Nome" />
+            <Input name="email" icon={FiMail} placeholder="E-mail" />
+            <Input
+              name="password"
+              icon={FiLock}
+              type="password"
+              placeholder="Senha"
+            />
 
-          <Button type="submit">Cadastrar</Button>
-        </Form>
-        <a href="forgot">
-          <FiArrowLeft />
-          Voltar para login
-        </a>
+            <Button type="submit">Cadastrar</Button>
+          </Form>
+          <Link to="/">
+            <FiArrowLeft />
+            Voltar para login
+          </Link>
+        </AnimationContainer>
       </Content>
     </Container>
   );
