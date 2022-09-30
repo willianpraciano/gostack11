@@ -3,7 +3,7 @@ import { FiLogIn, FiMail, FiLock } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../../hooks/auth';
 import { useToast } from '../../hooks/toast';
@@ -25,6 +25,8 @@ interface ISignInFormData {
 export function SignIn() {
   const formRef = useRef<FormHandles>(null);
 
+  const navigate = useNavigate();
+
   const { signIn } = useAuth();
   const { addToast } = useToast();
 
@@ -45,6 +47,8 @@ export function SignIn() {
         });
 
         await signIn({ email: data.email, password: data.password });
+
+        navigate('/dashboard');
       } catch (err: any) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
@@ -62,7 +66,7 @@ export function SignIn() {
         });
       }
     },
-    [signIn, addToast], // toda variável externa usada dentro do useCallback precisa ser colocada nas dependências
+    [signIn, addToast, navigate], // toda variável externa usada dentro do useCallback precisa ser colocada nas dependências
   );
 
   return (
