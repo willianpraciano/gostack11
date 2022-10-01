@@ -58,8 +58,8 @@ export function AuthProvider({ children }: IAuthProviderProps) {
   );
 
   const signOut = useCallback(() => {
-    localStorage.remove('@GoBarber:token');
-    localStorage.remove('@GoBarber:user');
+    localStorage.removeItem('@GoBarber:token');
+    localStorage.removeItem('@GoBarber:user');
 
     setData({} as IAuthState);
   }, []);

@@ -7,9 +7,16 @@ import React, {
 } from 'react';
 import { api } from '../services/api';
 
+interface IUser {
+  id: string;
+  name: string;
+  email: string;
+  avatar_url: string;
+}
+
 interface IAuthState {
   token: string;
-  user: object;
+  user: IUser;
 }
 
 interface ISignInCredentials {
@@ -18,7 +25,7 @@ interface ISignInCredentials {
 }
 
 interface IAuthContext {
-  user: object;
+  user: IUser;
   signIn(credentials: ISignInCredentials): Promise<void>;
   signOut(): void;
 }
@@ -58,8 +65,8 @@ export function AuthProvider({ children }: IAuthProviderProps) {
   );
 
   const signOut = useCallback(() => {
-    localStorage.remove('@GoBarber:token');
-    localStorage.remove('@GoBarber:user');
+    localStorage.removeItem('@GoBarber:token');
+    localStorage.removeItem('@GoBarber:user');
 
     setData({} as IAuthState);
   }, []);
