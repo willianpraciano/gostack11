@@ -1,9 +1,10 @@
-import { useCallback, useRef } from 'react';
-import { FiLock } from 'react-icons/fi';
+import { useCallback, useRef, useState } from 'react';
+import { FiLock, FiLogIn } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
-import { useNavigate } from 'react-router-dom';
+import * as uuid from 'uuid';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 
 import { useToast } from '../../hooks/toast';
 
@@ -15,6 +16,7 @@ import { Input } from '../../components/Input';
 import { Button } from '../../components/Button';
 
 import { Container, Content, AnimationContainer, Background } from './styles';
+import { api } from '../../services/api';
 
 interface IResetPasswordFormData {
   password: string;
@@ -22,15 +24,20 @@ interface IResetPasswordFormData {
 }
 
 export function ResetPassword() {
+  const [loading, setLoading] = useState(false);
+
   const formRef = useRef<FormHandles>(null);
 
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const { addToast } = useToast();
 
   const handleSubmit = useCallback(
     async (data: IResetPasswordFormData) => {
       try {
+        setLoading(true);
+
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
@@ -44,7 +51,25 @@ export function ResetPassword() {
           abortEarly: false,
         });
 
-        // navigate('/');
+        const { password, password_confirmation } = data;
+        const token = searchParams.get('token');
+
+        if (!token || !uuid.validate(token)) {
+          throw new Error();
+        }
+
+        await api.post('/password/reset', {
+          password,
+          password_confirmation,
+          token,
+        });
+
+        addToast({
+          type: 'success',
+          title: 'Senha alterada com sucesso.',
+        });
+
+        navigate('/');
       } catch (err: any) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
@@ -60,9 +85,11 @@ export function ResetPassword() {
           title: 'Erro ao resetar senha.',
           description: 'Ocorreu um erro ao resetar sua senha, tente novamente.',
         });
+      } finally {
+        setLoading(false);
       }
     },
-    [addToast, navigate], // toda variável externa usada dentro do useCallback precisa ser colocada nas dependências
+    [addToast, navigate, searchParams], // toda variável externa usada dentro do useCallback precisa ser colocada nas dependências
   );
 
   return (
@@ -87,7 +114,10 @@ export function ResetPassword() {
               placeholder="Confirmação da Senha"
             />
 
-            <Button type="submit">Alterar Senha</Button>
+            <Button loading={loading} type="submit">
+              Alterar Senha
+            </Button>
+            <Link to="/forgot-password">Reenviar email de recuperação</Link>
           </Form>
         </AnimationContainer>
       </Content>

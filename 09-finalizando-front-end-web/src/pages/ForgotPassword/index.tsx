@@ -98,7 +98,7 @@ export function ForgotPassword() {
               Recuperar
             </Button>
           </Form>
-          <Link to="signin">
+          <Link to="/">
             <FiLogIn />
             Voltar ao Login
           </Link>
