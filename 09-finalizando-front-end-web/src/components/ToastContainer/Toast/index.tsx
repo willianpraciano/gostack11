@@ -39,9 +39,10 @@ export function Toast({ message, style }: IToastProps) {
   }, [removeToast, message.id]);
 
   return (
+    /**Não enviar valor boleano diretamente para tag HTML */
     <Container
       type={message.type}
-      hasDescription={!!message.description}
+      hasDescription={Number(!!message.description)}
       style={style}
     >
       {icons[message.type || 'info']}
