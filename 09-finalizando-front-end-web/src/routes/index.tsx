@@ -8,6 +8,7 @@ import { SignUp } from '../pages/SignUp';
 
 import { Dashboard } from '../pages/Dashboard';
 import { ForgotPassword } from '../pages/ForgotPassword';
+import { ResetPassword } from '../pages/ResetPassword';
 
 export function Routes() {
   return (
@@ -16,6 +17,7 @@ export function Routes() {
         <Route path="/" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
       </Route>
 
       <Route element={<PrivateRoutes />}>
