@@ -41,6 +41,7 @@ export function AuthProvider({ children }: IAuthProviderProps) {
     const user = localStorage.getItem('@GoBarber:user');
 
     if (token && user) {
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       return { token, user: JSON.parse(user) };
     }
 
@@ -58,6 +59,8 @@ export function AuthProvider({ children }: IAuthProviderProps) {
 
       localStorage.setItem('@GoBarber:token', token);
       localStorage.setItem('@GoBarber:user', JSON.stringify(user));
+
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
       setData({ token, user });
     },
