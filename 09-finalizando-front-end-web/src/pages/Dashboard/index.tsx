@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { isToday, format } from 'date-fns';
+import ptBR from 'date-fns/locale/pt-BR';
 import { FiClock, FiPower } from 'react-icons/fi';
 import DayPicker, { DayModifiers } from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
@@ -19,12 +21,21 @@ import {
   Appointment,
   Calendar,
 } from './styles';
+
 import { api } from '../../services/api';
-import { date } from 'yup';
 
 interface IMonthAvailabilityItem {
   day: number;
   available: boolean;
+}
+
+interface IAppointment {
+  id: string;
+  date: string;
+  user: {
+    name: string;
+    avatar_url: string;
+  };
 }
 
 export function Dashboard() {
@@ -34,6 +45,8 @@ export function Dashboard() {
   const [monthAvailability, setMonthAvailability] = useState<
     IMonthAvailabilityItem[]
   >([]);
+
+  const [appointments, setAppointments] = useState<IAppointment[]>([]);
 
   const { signOut, user } = useAuth();
 
@@ -47,6 +60,7 @@ export function Dashboard() {
     setCurrentMonth(month);
   }, []);
 
+  /** useEffect para carregar a disponibilidade do mês */
   useEffect(() => {
     api
       .get(`/providers/${user.id}/month-availability`, {
@@ -60,11 +74,27 @@ export function Dashboard() {
       });
   }, [currentMonth, user.id]);
 
+  /** useEffect para carregar os agendamentos */
+  useEffect(() => {
+    api
+      .get('/appointments/me', {
+        params: {
+          year: selectedDate.getFullYear(),
+          month: selectedDate.getMonth() + 1,
+          day: selectedDate.getDate(),
+        },
+      })
+      .then((response) => {
+        setAppointments(response.data);
+        console.log('[AQUI]', response.data);
+      });
+  }, [selectedDate]);
+
   /**
    * De forma similar ao useCallback, que serve para funções,
    * o useMemo é utilizado para armazenar na mémoria um valor
    * ou uma formatação (que não devem NUNCA ser feitas dentro
-   * do html).
+   * do html.
    */
   const disabledDays = useMemo(() => {
     const dates = monthAvailability
@@ -77,6 +107,16 @@ export function Dashboard() {
 
     return dates;
   }, [currentMonth, monthAvailability]);
+
+  const selectedDateAsText = useMemo(
+    () => format(selectedDate, "'Dia' dd 'de' MMMM", { locale: ptBR }),
+    [selectedDate],
+  );
+
+  const selectedWeekDay = useMemo(
+    () => format(selectedDate, 'cccc', { locale: ptBR }),
+    [selectedDate],
+  );
 
   return (
     <Container>
@@ -102,9 +142,9 @@ export function Dashboard() {
         <Schedule>
           <h1>Horários agendados</h1>
           <p>
-            <span>Hoje</span>
-            <span>Dia 01</span>
-            <span>Sábado</span>
+            {isToday(selectedDate) && <span>Hoje</span>}
+            <span>{selectedDateAsText}</span>
+            <span>{selectedWeekDay}</span>
           </p>
 
           <NextAppointment>
