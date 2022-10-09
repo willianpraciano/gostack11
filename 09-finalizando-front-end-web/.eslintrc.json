@@ -5,6 +5,7 @@
   },
   "extends": [
     "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
     "plugin:@typescript-eslint/recommended",
     "prettier",
     "plugin:prettier/recommended",
@@ -17,6 +18,7 @@
   },
   "plugins": [
     "react",
+    "react-hooks",
     "@typescript-eslint",
     "eslint-plugin-import-helpers",
     "prettier"
@@ -30,6 +32,8 @@
     "import/no-duplicates": "off",
     "object-curly-newline": "off",
     "arrow-body-style": "off",
+    "implicit-arrow-linebreak": "off",
+    "function-paren-newline": "off",
     "react/jsx-filename-extension": [
       2,
       {
