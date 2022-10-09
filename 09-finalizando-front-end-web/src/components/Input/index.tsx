@@ -58,6 +58,7 @@ export function Input({ name, icon: Icon, ...rest }: InputProps) {
     <Container isErrored={!!error} isFilled={isFilled} isFocused={isFocused}>
       {Icon && <Icon size={20} />}
       <input
+        name={name}
         onFocus={handleInputFocus}
         onBlur={handleInputBlur}
         defaultValue={defaultValue}

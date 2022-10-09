@@ -34,6 +34,8 @@
     "arrow-body-style": "off",
     "implicit-arrow-linebreak": "off",
     "function-paren-newline": "off",
+    "react/require-default-props": "off",
+    "react/jsx-props-no-spreading": "off",
     "react/jsx-filename-extension": [
       2,
       {

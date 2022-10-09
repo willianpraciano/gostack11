@@ -5,10 +5,11 @@ import { PublicRoutes } from './PublicRoutes';
 
 import { SignIn } from '../pages/SignIn';
 import { SignUp } from '../pages/SignUp';
-
-import { Dashboard } from '../pages/Dashboard';
 import { ForgotPassword } from '../pages/ForgotPassword';
 import { ResetPassword } from '../pages/ResetPassword';
+
+import { Dashboard } from '../pages/Dashboard';
+import { Profile } from '../pages/Profile';
 
 export function Routes() {
   return (
@@ -22,6 +23,7 @@ export function Routes() {
 
       <Route element={<PrivateRoutes />}>
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/profile" element={<Profile />} />
       </Route>
 
       <Route path="*" element={<h1>404 NOT FOUND</h1>} />
