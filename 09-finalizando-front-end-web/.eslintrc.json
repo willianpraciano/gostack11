@@ -29,6 +29,7 @@
     "react/react-in-jsx-scope": "off",
     "import/no-duplicates": "off",
     "object-curly-newline": "off",
+    "arrow-body-style": "off",
     "react/jsx-filename-extension": [
       2,
       {
