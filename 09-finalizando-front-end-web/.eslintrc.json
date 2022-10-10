@@ -32,6 +32,7 @@
     "import/no-duplicates": "off",
     "object-curly-newline": "off",
     "arrow-body-style": "off",
+    "camelcase": "off",
     "implicit-arrow-linebreak": "off",
     "function-paren-newline": "off",
     "react/require-default-props": "off",
