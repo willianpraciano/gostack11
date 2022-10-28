@@ -36,6 +36,7 @@
     "function-paren-newline": "off",
     "react/require-default-props": "off",
     "react/jsx-props-no-spreading": "off",
+    "@typescript-eslint/no-empty-interface": "off",
     "react/jsx-filename-extension": [
       2,
       {
