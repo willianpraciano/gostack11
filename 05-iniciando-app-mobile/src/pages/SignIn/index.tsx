@@ -1,15 +1,15 @@
 import React from 'react';
-import { Text, Image } from 'react-native';
+import { Image } from 'react-native';
 
-import { Container } from './styles';
+import { Container, Title } from './styles';
 
 import logoImg from '../../assets/logo.png';
 
 export function SignIn() {
   return (
     <Container>
-      <Text>SignIn</Text>
       <Image source={logoImg} />
+      <Title>Faça seu logon</Title>
     </Container>
   );
 }
