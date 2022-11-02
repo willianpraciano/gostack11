@@ -1,4 +1,12 @@
-import { useEffect, useRef, useImperativeHandle, Ref, forwardRef } from 'react';
+import {
+  useState,
+  useCallback,
+  useEffect,
+  useRef,
+  useImperativeHandle,
+  Ref,
+  forwardRef,
+} from 'react';
 import { TextInputProps, View } from 'react-native';
 import { useField } from '@unform/core';
 
@@ -16,8 +24,12 @@ interface IInputValueReference {
 interface IInputRef {
   focus: () => void;
 }
+
 export const Input = forwardRef(
   ({ name, icon, ...rest }: IInputProps, ref: Ref<IInputRef>) => {
+    const [isFocused, setIsFocused] = useState(false);
+    const [isFilled, setIsFilled] = useState(false);
+
     /**
      * No unform há a opção de definir o valor de um campo de forma dinâmuica, por
      * exemplo, à partir de alguma ação do usuário.
@@ -73,10 +85,24 @@ export const Input = forwardRef(
       },
     }));
 
+    const handleInputFocus = useCallback(() => {
+      setIsFocused(true);
+    }, []);
+
+    const handleInputBlur = useCallback(() => {
+      setIsFocused(false);
+
+      setIsFilled(!!inputValueRef.current.value);
+    }, []);
+
     return (
-      <Container>
+      <Container isFocused={isFocused}>
         <View>
-          <Icon name={icon} size={20} color="#666360" />
+          <Icon
+            name={icon}
+            size={20}
+            color={isFocused || isFilled ? '#ff9000' : '#666360'}
+          />
         </View>
 
         <TextInput
@@ -84,6 +110,8 @@ export const Input = forwardRef(
           keyboarAppearance="dark"
           placeholderTextColor="#666360"
           defaultValue={defaultValue}
+          onFocus={handleInputFocus}
+          onBlur={handleInputBlur}
           onChangeText={(value: string) => {
             inputValueRef.current.value = value;
           }}
