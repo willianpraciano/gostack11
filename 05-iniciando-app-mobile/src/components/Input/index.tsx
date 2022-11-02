@@ -96,7 +96,7 @@ export const Input = forwardRef(
     }, []);
 
     return (
-      <Container isFocused={isFocused}>
+      <Container isFocused={isFocused} isErrored={!!error}>
         <View>
           <Icon
             name={icon}
