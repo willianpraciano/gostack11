@@ -17,6 +17,7 @@ import * as Yup from 'yup';
 import { Input } from '../../components/Input';
 import { Button } from '../../components/Button';
 
+import { api } from '../../services/api';
 import { getValidationErrors } from '../../utils/getValidationsErrors';
 import logoImg from '../../assets/logo.png';
 
@@ -56,13 +57,22 @@ export function SignUp() {
         abortEarly: false,
       });
 
-      // await api.post('/users', data);
+      await api.post('/users', data);
+
+      Alert.alert(
+        'Cadastro realizado com sucesso!',
+        'Você já pode fazer login na aplicação.',
+      );
+
+      navigation.navigate('SignIn' as never);
     } catch (err: any) {
       if (err instanceof Yup.ValidationError) {
         const errors = getValidationErrors(err);
         formRef.current?.setErrors(errors);
         return;
       }
+
+      console.log(err);
 
       Alert.alert(
         'Erro no cadastro',
