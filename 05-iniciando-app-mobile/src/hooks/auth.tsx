@@ -30,6 +30,7 @@ interface ISignInCredentials {
 
 interface IAuthContext {
   user: IUser;
+  loading: boolean;
   signIn(credentials: ISignInCredentials): Promise<void>;
   signOut(): void;
   updateUser(user: IUser): void;
@@ -43,6 +44,7 @@ const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 
 export function AuthProvider({ children }: IAuthProviderProps) {
   const [data, setData] = useState<IAuthState>({} as IAuthState);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadStorageData(): Promise<void> {
@@ -54,6 +56,8 @@ export function AuthProvider({ children }: IAuthProviderProps) {
       if (token[1] && user[1]) {
         setData({ token: token[1], user: JSON.parse(user[1]) });
       }
+
+      setLoading(false);
     }
 
     loadStorageData();
@@ -101,11 +105,12 @@ export function AuthProvider({ children }: IAuthProviderProps) {
   const value = useMemo(
     () => ({
       user: data.user,
+      loading,
       signIn,
       signOut,
       updateUser,
     }),
-    [data.user, signIn, signOut, updateUser],
+    [data.user, loading, signIn, signOut, updateUser],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
