@@ -1,7 +1,7 @@
 import 'dotenv/config';
-import { DataSource } from 'typeorm';
+import { DataSource, DataSourceOptions } from 'typeorm';
 
-export const postgresDataSource = new DataSource({
+let data: DataSourceOptions = {
   type: 'postgres',
   host: process.env.DB_HOST,
   port: Number(process.env.DB_PORT),
@@ -18,4 +18,18 @@ export const postgresDataSource = new DataSource({
       ? './dist/shared/infra/typeorm/migrations/*.js'
       : './src/shared/infra/typeorm/migrations/*.ts',
   ],
-});
+};
+
+if (process.env.DB_SSL === 'true') {
+  data = {
+    ...data,
+    ssl: true,
+    extra: {
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    },
+  };
+}
+
+export const postgresDataSource = new DataSource(data);
