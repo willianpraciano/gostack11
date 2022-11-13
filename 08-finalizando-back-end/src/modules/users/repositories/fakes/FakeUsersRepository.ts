@@ -9,16 +9,16 @@ import { IFindAllProvidersDTO } from '@modules/users/dtos/IFindAllProvidersDTO';
 export class FakeUsersRepository implements IUsersRepository {
   private users: User[] = [];
 
-  public async findById(id: string): Promise<User | undefined> {
+  public async findById(id: string): Promise<User | null> {
     const findUser = this.users.find(user => user.id === id);
 
-    return findUser;
+    return findUser || null;
   }
 
-  public async findByEmail(email: string): Promise<User | undefined> {
+  public async findByEmail(email: string): Promise<User | null> {
     const findUser = this.users.find(user => user.email === email);
 
-    return findUser;
+    return findUser || null;
   }
 
   public async findAllProviders({

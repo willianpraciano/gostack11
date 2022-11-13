@@ -1,5 +1,6 @@
-import { getRepository, Not, Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 
+import { postgresDataSource } from '@shared/infra/typeorm';
 import { IUsersRepository } from '@modules/users/repositories/IUsersRepository';
 import { ICreateUserDTO } from '@modules/users/dtos/ICreateUserDTO';
 
@@ -10,19 +11,17 @@ export class UsersRepository implements IUsersRepository {
   private ormRepository: Repository<User>;
 
   constructor() {
-    this.ormRepository = getRepository(User);
+    this.ormRepository = postgresDataSource.getRepository(User);
   }
 
-  public async findById(id: string): Promise<User | undefined> {
-    const user = await this.ormRepository.findOne(id);
+  public async findById(id: string): Promise<User | null> {
+    const user = await this.ormRepository.findOneBy({ id });
 
     return user;
   }
 
-  public async findByEmail(email: string): Promise<User | undefined> {
-    const user = await this.ormRepository.findOne({
-      where: { email },
-    });
+  public async findByEmail(email: string): Promise<User | null> {
+    const user = await this.ormRepository.findOneBy({ email });
 
     return user;
   }
@@ -33,10 +32,8 @@ export class UsersRepository implements IUsersRepository {
     let users: User[];
 
     if (except_user_id) {
-      users = await this.ormRepository.find({
-        where: {
-          id: Not(except_user_id),
-        },
+      users = await this.ormRepository.findBy({
+        id: Not(except_user_id),
       });
     } else {
       users = await this.ormRepository.find();
