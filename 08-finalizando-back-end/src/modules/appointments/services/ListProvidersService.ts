@@ -1,17 +1,17 @@
 import { injectable, inject } from 'tsyringe';
 import { instanceToInstance } from 'class-transformer';
 
-import IUsersRepository from '@modules/users/repositories/IUsersRepository';
-import User from '@modules/users/infra/typeorm/entities/User';
+import { IUsersRepository } from '@modules/users/repositories/IUsersRepository';
+import { User } from '@modules/users/infra/typeorm/entities/User';
 
-import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
+import { ICacheProvider } from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 
 interface IRequestDTO {
   user_id: string;
 }
 
 @injectable()
-export default class ListProvidersService {
+export class ListProvidersService {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,

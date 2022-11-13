@@ -1,14 +1,14 @@
 import { v4 as uuid } from 'uuid';
 import { isEqual, getMonth, getYear, getDate } from 'date-fns';
 
-import IAppoitmentsRepository from '@modules/appointments/repositories/IAppointmentsRepository';
-import ICreateAppointmentDTO from '@modules/appointments/dtos/ICreateAppointmentDTO';
-import IFindAllInMonthFromProviderDTO from '@modules/appointments/dtos/IFindAllInMonthFromProviderDTO';
-import IFindAllInDayFromProviderDTO from '@modules/appointments/dtos/IFindAllInDayFromProviderDTO';
+import { IAppointmentsRepository } from '@modules/appointments/repositories/IAppointmentsRepository';
+import { ICreateAppointmentDTO } from '@modules/appointments/dtos/ICreateAppointmentDTO';
+import { IFindAllInMonthFromProviderDTO } from '@modules/appointments/dtos/IFindAllInMonthFromProviderDTO';
+import { IFindAllInDayFromProviderDTO } from '@modules/appointments/dtos/IFindAllInDayFromProviderDTO';
 
-import Appointment from '../../infra/typeorm/entities/Appointment';
+import { Appointment } from '../../infra/typeorm/entities/Appointment';
 
-class AppointmentsRepository implements IAppoitmentsRepository {
+export class FakeAppointmentsRepository implements IAppointmentsRepository {
   private appointments: Appointment[] = [];
 
   public async findByDate(
@@ -76,5 +76,3 @@ class AppointmentsRepository implements IAppoitmentsRepository {
     return appointment;
   }
 }
-
-export default AppointmentsRepository;

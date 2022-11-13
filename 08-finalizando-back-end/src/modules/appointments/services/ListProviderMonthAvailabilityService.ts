@@ -1,8 +1,7 @@
 import { injectable, inject } from 'tsyringe';
 import { getDate, getDaysInMonth, isAfter } from 'date-fns';
 
-import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
-import User from '@modules/users/infra/typeorm/entities/User';
+import { IAppointmentsRepository } from '../repositories/IAppointmentsRepository';
 
 interface IRequestDTO {
   provider_id: string;
@@ -16,7 +15,7 @@ type IRepsonse = Array<{
 }>;
 
 @injectable()
-export default class ListProviderMonthAvailabilityService {
+export class ListProviderMonthAvailabilityService {
   constructor(
     @inject('AppointmentsRepository')
     private appointmentsRepository: IAppointmentsRepository,

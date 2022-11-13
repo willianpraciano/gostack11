@@ -1,23 +1,20 @@
 import { injectable, inject } from 'tsyringe';
 import path from 'path';
 
-import AppError from '@shared/errors/AppError';
-import IUserRepository from '../repositories/IUsersRepository';
-import IUserTokensRepository from '../repositories/IUserTokensRepository';
-import IMailProvider from '@shared/container/providers/MailProvider/models/IMailProvider';
-
-import User from '../infra/typeorm/entities/User';
-import { Subject } from 'typeorm/persistence/Subject';
+import { AppError } from '@shared/errors/AppError';
+import { IUsersRepository } from '../repositories/IUsersRepository';
+import { IUserTokensRepository } from '../repositories/IUserTokensRepository';
+import { IMailProvider } from '@shared/container/providers/MailProvider/models/IMailProvider';
 
 interface IRequest {
   email: string;
 }
 
 @injectable()
-class SendForgotPasswordEmailService {
+export class SendForgotPasswordEmailService {
   constructor(
     @inject('UsersRepository')
-    private usersRepository: IUserRepository,
+    private usersRepository: IUsersRepository,
 
     @inject('MailProvider')
     private mailProvider: IMailProvider,
@@ -35,6 +32,9 @@ class SendForgotPasswordEmailService {
 
     const forgotPasswordTemplate = path.resolve(
       __dirname,
+      '..',
+      '..',
+      '..',
       '..',
       'views',
       'forgot_password.hbs',
@@ -56,5 +56,3 @@ class SendForgotPasswordEmailService {
     });
   }
 }
-
-export default SendForgotPasswordEmailService;

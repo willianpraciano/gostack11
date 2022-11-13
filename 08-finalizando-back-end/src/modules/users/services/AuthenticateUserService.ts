@@ -1,12 +1,13 @@
 import { sign } from 'jsonwebtoken';
-import authConfig from '@config/auth';
 import { injectable, inject } from 'tsyringe';
 
-import IUserRepository from '../repositories/IUsersRepository';
-import AppError from '@shared/errors/AppError';
+import authConfig from '@config/auth';
 
-import User from '../infra/typeorm/entities/User';
-import IHashProvider from '../providers/HashProvider/models/IHashProvider';
+import { IUsersRepository } from '../repositories/IUsersRepository';
+import { AppError } from '@shared/errors/AppError';
+
+import { User } from '../infra/typeorm/entities/User';
+import { IHashProvider } from '../providers/HashProvider/models/IHashProvider';
 
 interface IRequest {
   email: string;
@@ -19,10 +20,10 @@ interface IReponse {
 }
 
 @injectable()
-class AuthenticateUserService {
+export class AuthenticateUserService {
   constructor(
     @inject('UsersRepository')
-    private usersRepository: IUserRepository,
+    private usersRepository: IUsersRepository,
 
     @inject('HashProvider')
     private hashedProvider: IHashProvider,
@@ -61,5 +62,3 @@ class AuthenticateUserService {
     };
   }
 }
-
-export default AuthenticateUserService;

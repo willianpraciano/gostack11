@@ -3,10 +3,10 @@ import multer from 'multer';
 import uploadConfig from '@config/upload';
 import { celebrate, Segments, Joi } from 'celebrate';
 
-import UsersController from '../controllers/UsersController';
-import UserAvatarController from '../controllers/UserAvatarController';
+import { UsersController } from '../controllers/UsersController';
+import { UserAvatarController } from '../controllers/UserAvatarController';
 
-import ensureAuthenticated from '../middlewares/ensureAuthenticated';
+import { ensureAuthenticated } from '../middlewares/ensureAuthenticated';
 
 const usersRouter = Router();
 const usersController = new UsersController();

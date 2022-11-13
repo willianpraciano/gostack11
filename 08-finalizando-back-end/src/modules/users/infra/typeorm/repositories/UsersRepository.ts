@@ -1,13 +1,12 @@
 import { getRepository, Not, Repository } from 'typeorm';
 
-import IUsersRepository from '@modules/users/repositories/IUsersRepository';
-import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
+import { IUsersRepository } from '@modules/users/repositories/IUsersRepository';
+import { ICreateUserDTO } from '@modules/users/dtos/ICreateUserDTO';
 
-import User from '../entities/User';
-import usersRouter from '../../http/routes/users.routes';
-import IFindAllProvidersDTO from '@modules/users/dtos/IFindAllProvidersDTO';
+import { User } from '../entities/User';
+import { IFindAllProvidersDTO } from '@modules/users/dtos/IFindAllProvidersDTO';
 
-class UsersRepository implements IUsersRepository {
+export class UsersRepository implements IUsersRepository {
   private ormRepository: Repository<User>;
 
   constructor() {
@@ -58,5 +57,3 @@ class UsersRepository implements IUsersRepository {
     return this.ormRepository.save(user);
   }
 }
-
-export default UsersRepository;

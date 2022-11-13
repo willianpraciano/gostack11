@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { RateLimiterRedis } from 'rate-limiter-flexible';
 import * as redis from 'redis';
 
-import AppError from '@shared/errors/AppError';
+import { AppError } from '@shared/errors/AppError';
 
 const redisClient = redis.createClient({
   legacyMode: true,

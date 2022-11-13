@@ -1,8 +1,8 @@
 import { injectable, inject } from 'tsyringe';
 
-import Appointment from '../infra/typeorm/entities/Appointment';
-import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
-import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
+import { Appointment } from '../infra/typeorm/entities/Appointment';
+import { IAppointmentsRepository } from '../repositories/IAppointmentsRepository';
+import { ICacheProvider } from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import { instanceToInstance } from 'class-transformer';
 
 interface IRequestDTO {
@@ -13,7 +13,7 @@ interface IRequestDTO {
 }
 
 @injectable()
-export default class ListProviderAppointmentsService {
+export class ListProviderAppointmentsService {
   constructor(
     @inject('AppointmentsRepository')
     private appointmentsRepository: IAppointmentsRepository,

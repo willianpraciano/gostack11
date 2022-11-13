@@ -1,20 +1,22 @@
 import { startOfHour, isBefore, getHours, format } from 'date-fns';
 import { injectable, inject } from 'tsyringe';
 
-import AppError from '@shared/errors/AppError';
+import { AppError } from '@shared/errors/AppError';
 
-import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
-import Appointment from '../infra/typeorm/entities/Appointment';
-import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
+import { ICacheProvider } from '@shared/container/providers/CacheProvider/models/ICacheProvider';
+import { Appointment } from '../infra/typeorm/entities/Appointment';
+import { IAppointmentsRepository } from '../repositories/IAppointmentsRepository';
 
-import INotificationsRepository from '@modules/notifications/repositories/INotificationsRepository';
+import { INotificationsRepository } from '@modules/notifications/repositories/INotificationsRepository';
+
 interface IRequest {
   provider_id: string;
   user_id: string;
   date: Date;
 }
+
 @injectable()
-class CreateAppointmentService {
+export class CreateAppointmentService {
   constructor(
     @inject('AppointmentsRepository')
     private appointmentsRepository: IAppointmentsRepository,
@@ -82,5 +84,3 @@ class CreateAppointmentService {
     return appointment;
   }
 }
-
-export default CreateAppointmentService;

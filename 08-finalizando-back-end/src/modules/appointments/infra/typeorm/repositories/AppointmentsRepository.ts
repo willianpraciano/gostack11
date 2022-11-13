@@ -1,13 +1,13 @@
 import { getRepository, Raw, Repository } from 'typeorm';
 
-import IAppoitmentsRepository from '@modules/appointments/repositories/IAppointmentsRepository';
-import ICreateAppointmentDTO from '@modules/appointments/dtos/ICreateAppointmentDTO';
-import IFindAllInMonthFromProviderDTO from '@modules/appointments/dtos/IFindAllInMonthFromProviderDTO';
+import { IAppointmentsRepository } from '@modules/appointments/repositories/IAppointmentsRepository';
+import { ICreateAppointmentDTO } from '@modules/appointments/dtos/ICreateAppointmentDTO';
+import { IFindAllInMonthFromProviderDTO } from '@modules/appointments/dtos/IFindAllInMonthFromProviderDTO';
 
-import Appointment from '../entities/Appointment';
-import IFindAllInDayFromProviderDTO from '@modules/appointments/dtos/IFindAllInDayFromProviderDTO';
+import { Appointment } from '../entities/Appointment';
+import { IFindAllInDayFromProviderDTO } from '@modules/appointments/dtos/IFindAllInDayFromProviderDTO';
 
-class AppointmentsRepository implements IAppoitmentsRepository {
+export class AppointmentsRepository implements IAppointmentsRepository {
   private ormRepository: Repository<Appointment>;
 
   constructor() {
@@ -82,5 +82,3 @@ class AppointmentsRepository implements IAppoitmentsRepository {
     return appointment;
   }
 }
-
-export default AppointmentsRepository;

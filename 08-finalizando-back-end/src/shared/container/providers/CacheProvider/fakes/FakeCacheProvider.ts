@@ -1,10 +1,10 @@
-import ICacheProvider from '../models/ICacheProvider';
+import { ICacheProvider } from '../models/ICacheProvider';
 
 interface ICacheData {
   [key: string]: string;
 }
 
-export default class FakeCacheProvider implements ICacheProvider {
+export class FakeCacheProvider implements ICacheProvider {
   private cache: ICacheData = {};
 
   public async save(key: string, value: any): Promise<void> {

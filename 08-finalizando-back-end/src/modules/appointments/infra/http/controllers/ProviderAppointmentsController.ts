@@ -3,13 +3,12 @@
  */
 
 import { Request, Response } from 'express';
-import { parseISO } from 'date-fns';
 import { container } from 'tsyringe';
 import { instanceToInstance } from 'class-transformer';
 
-import ListProviderAppointmentsService from '@modules/appointments/services/ListProviderAppointmentsService';
+import { ListProviderAppointmentsService } from '@modules/appointments/services/ListProviderAppointmentsService';
 
-export default class ProviderAppointmentsController {
+export class ProviderAppointmentsController {
   public async index(request: Request, response: Response): Promise<Response> {
     const provider_id = request.user.id;
     const { day, month, year } = request.query;
