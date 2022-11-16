@@ -1,7 +1,8 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../hooks/auth';
 
+import { api } from '../../services/api';
 import {
   Container,
   Header,
@@ -9,14 +10,29 @@ import {
   UserName,
   ProfileButton,
   UserAvatar,
+  ProvidersList,
 } from './styles';
 
+export interface IProvider {
+  id: string;
+  name: string;
+  email: string;
+  avatar_url: string;
+}
+
 export function Dashboard() {
+  const [providers, setProviders] = useState<IProvider[]>([]);
   const { user } = useAuth();
   const { navigate } = useNavigation();
 
+  useEffect(() => {
+    api.get('providers').then((response) => {
+      setProviders(response.data);
+    });
+  }, []);
+
   const navigateToProfile = useCallback(() => {
-    navigate('Profile');
+    navigate('Profile' as never);
   }, [navigate]);
 
   return (
@@ -31,6 +47,15 @@ export function Dashboard() {
           <UserAvatar source={{ uri: user.avatar_url }} />
         </ProfileButton>
       </Header>
+
+      <ProvidersList
+        data={providers}
+        keyExtractor={(provider: IProvider) => provider.id}
+        // eslint-disable-next-line
+        renderItem={({ item }: { item: IProvider }) => (
+          <UserName>{item.email}</UserName>
+        )}
+      />
     </Container>
   );
 }

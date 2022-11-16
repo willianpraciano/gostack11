@@ -54,6 +54,7 @@ export function AuthProvider({ children }: IAuthProviderProps) {
       ]);
 
       if (token[1] && user[1]) {
+        api.defaults.headers.common.Authorization = `Bearer ${token[1]}`;
         setData({ token: token[1], user: JSON.parse(user[1]) });
       }
 
