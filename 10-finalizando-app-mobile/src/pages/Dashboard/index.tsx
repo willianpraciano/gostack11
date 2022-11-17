@@ -37,7 +37,7 @@ interface IRenderItem {
 
 export function Dashboard() {
   const [providers, setProviders] = useState<IProvider[]>([]);
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const { navigate } = useNavigation();
 
   useEffect(() => {
@@ -47,8 +47,9 @@ export function Dashboard() {
   }, []);
 
   const navigateToProfile = useCallback(() => {
-    navigate('Profile');
-  }, [navigate]);
+    // navigate('Profile');
+    signOut();
+  }, [signOut]);
 
   const navigateToCreateAppointment = useCallback(
     (providerId: string) => {
