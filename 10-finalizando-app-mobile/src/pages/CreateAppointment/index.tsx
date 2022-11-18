@@ -41,6 +41,11 @@ interface IRenderItem {
   item: IProvider;
 }
 
+interface IAvailabilityItem {
+  hour: number;
+  availability: boolean;
+}
+
 export function CreateAppointment() {
   const { user } = useAuth();
   const route = useRoute();
@@ -48,6 +53,7 @@ export function CreateAppointment() {
 
   const routeParams = route.params as IRouteParams;
 
+  const [availability, setAvailability] = useState<IAvailabilityItem[]>([]);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [providers, setProviders] = useState<IProvider[]>([]);
@@ -60,6 +66,20 @@ export function CreateAppointment() {
       setProviders(response.data);
     });
   }, []);
+
+  useEffect(() => {
+    api
+      .get(`providers/${selectedProvider}/day-availability`, {
+        params: {
+          yarn: selectedDate.getFullYear(),
+          month: selectedDate.getMonth() + 1,
+          day: selectedDate.getDate(),
+        },
+      })
+      .then((response) => {
+        setAvailability(response.data);
+      });
+  }, [selectedProvider, selectedDate]);
 
   const navigateBack = useCallback(() => {
     goBack();
