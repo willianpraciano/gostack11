@@ -38,7 +38,9 @@ export const UserAvatar = styled.Image`
   border-radius: 28px;
 `;
 
-export const ProvidersList = styled.FlatList`
+export const ProvidersList = styled.FlatList.attrs({
+  contentContainerStyle: { paddingBottom: 32 },
+})`
   padding: 32px 24px 16px;
 `;
 
