@@ -3,6 +3,7 @@ export declare global {
     interface RootParamList {
       [pageName: string]: undefined;
       CreateAppointment: { providerId: string };
+      AppointmentCreated: { date: number };
     }
   }
 }
