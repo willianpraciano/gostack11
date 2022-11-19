@@ -1,7 +1,8 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { format } from 'date-fns';
 
 import { Platform } from 'react-native';
 import { useAuth } from '../../hooks/auth';
@@ -43,7 +44,7 @@ interface IRenderItem {
 
 interface IAvailabilityItem {
   hour: number;
-  availability: boolean;
+  available: boolean;
 }
 
 export function CreateAppointment() {
@@ -100,6 +101,30 @@ export function CreateAppointment() {
     if (date) setSelectedDate(date);
   }, []);
 
+  const morningAvailability = useMemo(() => {
+    return availability
+      .filter(({ hour }) => hour < 12)
+      .map(({ hour, available }) => {
+        return {
+          hour,
+          available,
+          hourFormatted: format(new Date().setHours(hour), 'HH:00'),
+        };
+      });
+  }, [availability]);
+
+  const afternoonAvailability = useMemo(() => {
+    return availability
+      .filter(({ hour }) => hour >= 12)
+      .map(({ hour, available }) => {
+        return {
+          hour,
+          available,
+          hourFormatted: format(new Date().setHours(hour), 'HH:00'),
+        };
+      });
+  }, [availability]);
+
   return (
     <Container>
       <Header>
@@ -147,6 +172,8 @@ export function CreateAppointment() {
             display="calendar"
             onChange={handleDateChanged}
             value={selectedDate}
+            positiveButton={{ label: 'OK', textColor: 'green' }}
+            negativeButton={{ label: 'Cancelar', textColor: 'red' }}
           />
         )}
       </Calendar>
