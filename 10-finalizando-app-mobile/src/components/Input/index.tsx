@@ -15,6 +15,7 @@ import { Container, TextInput, Icon } from './styles';
 interface IInputProps extends TextInputProps {
   name: string;
   icon: string;
+  containerStyle?: object;
 }
 
 interface IInputValueReference {
@@ -26,7 +27,10 @@ interface IInputRef {
 }
 
 export const Input = forwardRef(
-  ({ name, icon, ...rest }: IInputProps, ref: Ref<IInputRef>) => {
+  (
+    { name, icon, containerStyle = {}, ...rest }: IInputProps,
+    ref: Ref<IInputRef>,
+  ) => {
     const [isFocused, setIsFocused] = useState(false);
     const [isFilled, setIsFilled] = useState(false);
 
@@ -59,7 +63,7 @@ export const Input = forwardRef(
         name: fieldName,
         ref: inputValueRef.current,
         path: 'value',
-        setValue(ref: any, value) {
+        setValue(_ref: any, value) {
           inputValueRef.current.value = value;
 
           /**
@@ -96,7 +100,11 @@ export const Input = forwardRef(
     }, []);
 
     return (
-      <Container isFocused={isFocused} isErrored={!!error}>
+      <Container
+        isFocused={isFocused}
+        isErrored={!!error}
+        style={containerStyle}
+      >
         <View>
           <Icon
             name={icon}
