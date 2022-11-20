@@ -1,6 +1,5 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import {
-  Image,
   KeyboardAvoidingView,
   ScrollView,
   Platform,
@@ -29,16 +28,18 @@ import {
   Title,
 } from './styles';
 
-interface ISignUpFormData {
+interface IProfileFormData {
   name: string;
   email: string;
+  old_password: string;
   password: string;
+  password_confirmation: string;
 }
 
 export function Profile() {
   const navigation = useNavigation();
 
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
 
   const formRef = useRef<FormHandles>(null);
   const emailInputRef = useRef<TextInput>(null);
@@ -46,8 +47,8 @@ export function Profile() {
   const passwordInputRef = useRef<TextInput>(null);
   const confirmPasswordInputRef = useRef<TextInput>(null);
 
-  const handleSignUp = useCallback(
-    async (data: ISignUpFormData) => {
+  const handleSubmit = useCallback(
+    async (data: IProfileFormData) => {
       try {
         formRef.current?.setErrors({});
 
@@ -56,24 +57,45 @@ export function Profile() {
           email: Yup.string()
             .required('E-mail obrigatório.')
             .email('Digite um e-mail válido.'),
-          password: Yup.string().min(
-            6,
-            'Senha deve conter no mínimo 6 digitos',
-          ),
+          old_password: Yup.string(),
+          password: Yup.string().when('old_password', {
+            is: (val: string) => !!val.length,
+            then: Yup.string().required(),
+            otherwise: Yup.string(),
+          }),
+          password_confirmation: Yup.string()
+            .when('old_password', {
+              is: (val: string) => !!val.length,
+              then: Yup.string().required(),
+              otherwise: Yup.string(),
+            })
+            .oneOf([Yup.ref('password'), null], 'Senhas devem ser iguais.'),
         });
 
         await schema.validate(data, {
           abortEarly: false,
         });
 
-        await api.post('/users', data);
+        const userData = { name: data.name, email: data.email };
 
-        Alert.alert(
-          'Cadastro realizado com sucesso!',
-          'Você já pode fazer login na aplicação.',
-        );
+        const passwordData = {
+          old_password: data.old_password,
+          password: data.password,
+          password_confirmation: data.password_confirmation,
+        };
 
-        navigation.navigate('SignIn');
+        const formData = {
+          ...userData,
+          ...(data.old_password ? passwordData : {}),
+        };
+
+        const response = await api.put('/profile', formData);
+
+        updateUser(response.data);
+
+        Alert.alert('Perfil atualizado com sucesso!');
+
+        navigation.goBack();
       } catch (err: any) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
@@ -81,20 +103,29 @@ export function Profile() {
           return;
         }
 
-        console.log(err);
-
+        /**
+         * Erros que NÃO forem de validação
+         */
         Alert.alert(
-          'Erro no cadastro',
-          'Ocorreu um erro ao fazer cadastro, tente novamente.',
+          'Erro na atualização do perfil',
+          'Ocorreu um erro ao atualizar perfil, tente novamente.',
         );
       }
     },
-    [navigation],
+    [navigation, updateUser],
   );
 
   const handleGoBack = useCallback(() => {
     navigation.goBack();
   }, [navigation]);
+
+  const initialData = useMemo(
+    () => ({
+      name: user.name,
+      email: user.email,
+    }),
+    [user.name, user.email],
+  );
 
   return (
     <KeyboardAvoidingView
@@ -114,7 +145,7 @@ export function Profile() {
           <View>
             <Title>Meu perfil</Title>
           </View>
-          <Form ref={formRef} onSubmit={handleSignUp}>
+          <Form ref={formRef} onSubmit={handleSubmit} initialData={initialData}>
             <Input
               autoCapitalize="words"
               name="name"

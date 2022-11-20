@@ -33,7 +33,7 @@ interface IAuthContext {
   loading: boolean;
   signIn(credentials: ISignInCredentials): Promise<void>;
   signOut(): void;
-  updateUser(user: IUser): void;
+  updateUser(user: IUser): Promise<void>;
 }
 
 interface IAuthProviderProps {
