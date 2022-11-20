@@ -12,6 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/mobile';
 import * as Yup from 'yup';
+import { launchImageLibrary } from 'react-native-image-picker';
 
 import { Input } from '../../components/Input';
 import { Button } from '../../components/Button';
@@ -119,6 +120,48 @@ export function Profile() {
     navigation.goBack();
   }, [navigation]);
 
+  const handleUpdateAvatar = useCallback(() => {
+    launchImageLibrary(
+      {
+        mediaType: 'photo',
+        quality: 1,
+      },
+      (response) => {
+        if (response.didCancel) {
+          return;
+        }
+
+        if (response.errorCode) {
+          Alert.alert(
+            `Erro ao atualizar seu avatar. ${response?.errorMessage}`,
+          );
+        }
+
+        if (response?.assets && response?.assets?.length > 0) {
+          const source = { uri: response?.assets[0].uri };
+
+          const data = new FormData();
+
+          data.append('avatar', {
+            type: 'image/jpeg',
+            name: `${user.id}.jpg`,
+            uri: source.uri,
+          });
+
+          api
+            .patch('users/avatar', data, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            })
+            .then((apiResponse) => {
+              updateUser(apiResponse.data);
+            });
+        }
+      },
+    );
+  }, [updateUser, user.id]);
+
   const initialData = useMemo(
     () => ({
       name: user.name,
@@ -138,7 +181,7 @@ export function Profile() {
           <BackButton onPress={handleGoBack}>
             <Icon name="chevron-left" size={24} color="#ffffff" />
           </BackButton>
-          <UserAvatarButton>
+          <UserAvatarButton onPress={handleUpdateAvatar}>
             <UserAvatar source={{ uri: user.avatar_url }} />
           </UserAvatarButton>
 
